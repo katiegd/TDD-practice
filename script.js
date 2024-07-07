@@ -65,22 +65,55 @@ function caesarCipher(string, shiftFactor) {
     "z",
   ];
   for (let i = 0; i < string.length; i++) {
-    for (let j = 0; j < alphabet.length; j++) {
-      if (string[i] === " ") {
-        newString += " ";
-      }
+    let currentChar = string[i];
 
-      if (string[i] === alphabet[j]) {
-        if (j + shiftFactor > alphabet.length - 1) {
-          newString += alphabet[j + shiftFactor - alphabet.length];
+    // Check if currentChar is a letter
+    if (/[a-zA-Z]/.test(currentChar)) {
+      const isUpperCase = currentChar === currentChar.toUpperCase();
+      currentChar = currentChar.toLowerCase();
+
+      for (let j = 0; j < alphabet.length; j++) {
+        if (currentChar === alphabet[j]) {
+          let shiftedIndex = (j + shiftFactor) % alphabet.length;
+          let shiftedChar = alphabet[shiftedIndex];
+
+          if (isUpperCase) {
+            shiftedChar = shiftedChar.toUpperCase();
+          }
+          newString += shiftedChar;
+          break;
         }
-        newString += alphabet[j + shiftFactor];
       }
+    } else {
+      newString += currentChar;
     }
   }
   return newString;
 }
 
 // 5. An analyzeArray function that takes an array of numbers and returns an object with the following properties: average, min, max, and length.
+function analyzeArray(array) {
+  let object = {};
+  array.sort();
+  let sum = 0;
+  let max = array[array.length - 1];
+  let min = array[0];
+  for (let i = 0; i < array.length; i++) {
+    sum += array[i];
+  }
+  let average = sum / array.length;
+  object.average = average;
+  object.min = min;
+  object.max = max;
+  object.length = array.length;
 
-module.exports = { calculator, capitalize, reverseString, caesarCipher };
+  return object;
+}
+
+module.exports = {
+  calculator,
+  capitalize,
+  reverseString,
+  caesarCipher,
+  analyzeArray,
+};
